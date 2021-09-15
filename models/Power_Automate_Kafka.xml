@@ -1,0 +1,56 @@
+<project name="Power_Automate_Kafka" pubsub="auto" threads="1" heartbeat-interval="1">
+  <metadata>
+    <meta id="layout">{"cq_01":{"Filter":{"x":25,"y":-315},"source":{"x":45,"y":-520}}}</meta>
+    <meta id="studioModifiedBy">user2</meta>
+    <meta id="studioModified">1627060628867</meta>
+    <meta id="studioUploadedBy">user2</meta>
+    <meta id="studioUploaded">1627059454161</meta>
+  </metadata>
+  <contqueries>
+    <contquery name="cq_01" trace="pub_win">
+      <windows>
+        <window-source index="pi_EMPTY" name="source">
+          <schema>
+            <fields>
+              <field name="alert_timestamp" type="string"/>
+              <field name="category" type="string"/>
+              <field name="description" type="string"/>
+              <field name="deviceid" type="string" key="true"/>
+              <field name="inbound_timestamp" type="string"/>
+              <field name="latitude" type="string"/>
+              <field name="location1" type="string"/>
+              <field name="location2" type="string"/>
+              <field name="location3" type="string"/>
+              <field name="longitude" type="string"/>
+              <field name="projectname" type="string"/>
+              <field name="sensorid" type="string" key="true"/>
+              <field name="subcategory" type="string"/>
+              <field name="value" type="double"/>
+            </fields>
+          </schema>
+        </window-source>
+        <window-filter name="Filter">
+          <expression><![CDATA[value > 100]]></expression>
+          <connectors>
+            <connector class="kafka" name="kafkaout">
+              <properties>
+                <property name="type"><![CDATA[sub]]></property>
+                <property name="kafkatype"><![CDATA[json]]></property>
+                <property name="urlhostport"><![CDATA[notusedwhennotHA]]></property>
+                <property name="kafkahostport"><![CDATA[[your-eventhub-namespace].servicebus.windows.net:9093]]></property>
+                <property name="kafkatopic"><![CDATA[to-pa]]></property>
+                <property name="kafkapartition"><![CDATA[-1]]></property>
+                <property name="kafkaglobalconfig"><![CDATA[security.protocol=SASL_SSL;sasl.username=$ConnectionString;sasl.password="[connectionstring-endpoint-for-EventHub-Instance]";sasl.mechanism=PLAIN;ssl.ca.location=/etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt]]></property>
+                <property name="snapshot"><![CDATA[false]]></property>
+                <property name="numbufferedmsgs"><![CDATA[1000]]></property>
+              </properties>
+            </connector>
+          </connectors>
+        </window-filter>
+      </windows>
+      <edges>
+        <edge source="source" target="Filter"/>
+      </edges>
+    </contquery>
+  </contqueries>
+</project>

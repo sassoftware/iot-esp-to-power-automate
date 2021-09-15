@@ -1,0 +1,52 @@
+<project name="power_automate" pubsub="auto" threads="1" heartbeat-interval="1">
+  <metadata>
+    <meta id="layout">{"cq_01":{"Filter":{"x":25,"y":-315},"source":{"x":45,"y":-520}}}</meta>
+    <meta id="studioModifiedBy">user2</meta>
+    <meta id="studioModified">1626980162529</meta>
+    <meta id="studioUploadedBy">user2</meta>
+    <meta id="studioUploaded">1626371987905</meta>
+  </metadata>
+  <contqueries>
+    <contquery name="cq_01" trace="pub_win">
+      <windows>
+        <window-source index="pi_EMPTY" name="source">
+          <schema>
+            <fields>
+              <field name="alert_timestamp" type="string"/>
+              <field name="category" type="string"/>
+              <field name="description" type="string"/>
+              <field name="deviceid" type="string" key="true"/>
+              <field name="inbound_timestamp" type="string"/>
+              <field name="latitude" type="double"/>
+              <field name="location1" type="string"/>
+              <field name="location2" type="string"/>
+              <field name="location3" type="string"/>
+              <field name="longitude" type="double"/>
+              <field name="projectname" type="string"/>
+              <field name="sensorid" type="string" key="true"/>
+              <field name="subcategory" type="string"/>
+              <field name="value" type="double"/>
+            </fields>
+          </schema>
+        </window-source>
+        <window-filter name="Filter">
+          <expression><![CDATA[value > 100]]></expression>
+          <connectors>
+            <connector class="eventhubs" name="evHub">
+              <properties>
+                <property name="type"><![CDATA[sub]]></property>
+                <property name="snapshot"><![CDATA[false]]></property>
+                <property name="eventhubsconnectionstring"><![CDATA[[connectionstring-endpoint-for-EventHub-Instance]]]></property>
+                <property name="eventhubspath"><![CDATA[your-eventhubs-instance-name]]></property>
+                <property name="eventhubsformat"><![CDATA[json]]></property>
+              </properties>
+            </connector>
+          </connectors>
+        </window-filter>
+      </windows>
+      <edges>
+        <edge source="source" target="Filter"/>
+      </edges>
+    </contquery>
+  </contqueries>
+</project>
